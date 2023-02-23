@@ -1,31 +1,26 @@
 const express = require('express');
+const path = require('path');
+const rootDir = require('./utils/rootDir');
 const bodyParser = require('body-parser');
+
+// Routes
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.use('/', (req, res, next) => {
-  console.log('1st Middleware')
-  next();
-});
+app.use(express.static(path.join(rootDir, 'public')))
 
-app.get('/add-product', (req, res, next) => {
-  res.send(`
-    <form method="POST" action="/product">
-    <input name="title">
-    <button type="Submit">Send</button>
-    </form>
-  `)
-});
 
-app.post('/product', (req, res,next) => {
-  console.log(req.body);
-  res.redirect('/');
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+
+// 404
+app.use((req, res, next) => {
+  res.status(404).sendFile(path.join(rootDir, 'views', '404.html'))
 })
 
-app.use('/', (req, res, next) => {
-  res.send('<h1>Main Text</h1>')
-});
 
 app.listen(3000)
