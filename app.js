@@ -14,8 +14,6 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 app.use(express.static(path.join(rootDir, 'public')))
 
-// app.engine('hbs', expressHandlebars({layoutsDir: 'views/layouts', defaultLayout: 'main-layouts', extname: 'hbs'}));
-
 app.set('view engine', 'ejs')
 app.set('views', 'views')
 
